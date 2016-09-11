@@ -31,7 +31,7 @@ public class BuProduct implements IBuProduct {
             if (!name.equalsIgnoreCase("")) {
                 product = daoProduct.findByName(name);
                 if (!product.getName().equalsIgnoreCase("")) {
-                   // return product
+                   return product;
                 } else {
                     throw new WineException(
                         WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
