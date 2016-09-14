@@ -13,6 +13,7 @@ import fr.afcepf.atod.wine.entity.Product;
 
 import java.util.List;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,23 @@ public class BuProduct implements IBuProduct {
             throw wineException;
         }
         return product;
+    }
+
+    @Override
+    public List<Product> findExpensive(double min) throws WineException {
+        List<Product> expensiveProds = null;
+        if (min >= 0) {
+            expensiveProds = daoProduct.findExpensiveProducts(min);
+            if (expensiveProds.isEmpty()){
+                throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "expensive products not found in the database");
+            }
+        } else {
+            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "criteria has to be defined...");
+        }
+        
+        return expensiveProds;
     }
 
 	@Override
