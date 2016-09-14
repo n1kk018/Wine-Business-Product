@@ -14,17 +14,7 @@
             <groupId>fr.afcepf.atod</groupId>
             <artifactId>Wine-Data-Product</artifactId>
             <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.afcepf.atod</groupId>
-            <artifactId>Wine-Exception</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.afcepf.atod</groupId>
-            <artifactId>Wine-Entity</artifactId>
-            <version>1.0</version>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
