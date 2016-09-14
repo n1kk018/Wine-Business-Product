@@ -5,6 +5,8 @@
  */
 package fr.afcepf.atod.business.product.api;
 
+import java.util.List;
+
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.entity.Product;
 
@@ -21,4 +23,6 @@ public interface IBuProduct {
      * @throws fr.afcepf.atod.vin.data.exception.WineException 
      */
     Product findByName(String name) throws WineException;
+    
+    List<Product> getPromotedProductsSelection() throws WineException;
 }

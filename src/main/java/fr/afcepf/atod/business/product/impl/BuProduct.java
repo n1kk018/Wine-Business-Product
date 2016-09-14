@@ -10,6 +10,9 @@ import fr.afcepf.atod.vin.data.exception.WineErrorCode;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
 import fr.afcepf.atod.wine.entity.Product;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ public class BuProduct implements IBuProduct {
 
     @Autowired
     private IDaoProduct daoProduct;
+    private static final int MAX_SE = 10;
 
     @Override
     public Product findByName(String name) throws WineException {
@@ -52,5 +56,19 @@ public class BuProduct implements IBuProduct {
         }
         return product;
     }
+
+	@Override
+	public List<Product> getPromotedProductsSelection() throws WineException {
+		List<Product> list = null;
+		try {
+            list = daoProduct.getPromotedProductsSortedByEndDate(MAX_SE);
+        } catch (Exception e)  {
+            throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+        }
+        
+        return list;
+	}
 
 }
