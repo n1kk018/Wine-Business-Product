@@ -9,6 +9,8 @@ import java.util.List;
 
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.entity.Product;
+import fr.afcepf.atod.wine.entity.ProductType;
+
 import java.util.List;
 
 /**
@@ -27,4 +29,5 @@ public interface IBuProduct {
     
     List<Product> getPromotedProductsSelection() throws WineException;
     List<Product> findExpensive(double min) throws WineException;
+    List<ProductType> getWineTypes() throws WineException;
 }
