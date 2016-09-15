@@ -7,14 +7,12 @@ package fr.afcepf.atod.business.product.api;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.springframework.aop.ThrowsAdvice;
 
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
+import fr.afcepf.atod.wine.entity.ProductVintage;
 
 import java.util.List;
 
@@ -35,6 +33,18 @@ public interface IBuProduct {
     List<Product> getPromotedProductsSelection() throws WineException;
     List<Product> findExpensive(double min) throws WineException;
     List<ProductType> getWineTypes() throws WineException;
-    Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException;
-    Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes) throws WineException;
+    
+    List<Product> findProductsByName(String name) throws WineException;
+    
+	List<Product> findProductsByAppelation(String appelation) throws WineException;
+
+	List<ProductVintage> findProductsByVintage(Integer vintage) throws WineException;
+
+	List<ProductVarietal> findProductsBy(String variatal) throws WineException;
+	
+	List<ProductType> findProductsByType(String wineType) throws WineException;
+	
+	 Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException;
+	 Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes) throws WineException;
 }
+
