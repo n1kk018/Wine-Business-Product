@@ -5,7 +5,9 @@
  */
 package fr.afcepf.atod.business.product.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -171,5 +173,39 @@ public class BuProduct implements IBuProduct {
 		}
 		return list;
 	}
+	
+	@Override
+	public Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException {
+		Map<ProductType, List<String>> map = new HashMap<ProductType, List<String>>();
+		try{
+			for (ProductType productType : wineTypes) {
+				map.put(productType, daoProduct.getAppellationsByWineType(productType));
+			}
+		} 
+		catch (Exception e)  {
+            throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+        }
+        return map;
+	}
+
+	@Override
+	public Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes)
+			throws WineException {
+		Map<ProductType, List<ProductVarietal>> map = new HashMap<ProductType, List<ProductVarietal>>();
+		try{
+			for (ProductType productType : wineTypes) {
+				map.put(productType, daoProduct.getVarietalsByWineType(productType));
+			}
+		} 
+		catch (Exception e)  {
+            throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+        }
+        return map;
+	}
 
 }
+

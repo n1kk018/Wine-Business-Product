@@ -6,6 +6,7 @@
 package fr.afcepf.atod.business.product.api;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.entity.Product;
@@ -42,4 +43,8 @@ public interface IBuProduct {
 	List<ProductVarietal> findProductsBy(String variatal) throws WineException;
 	
 	List<ProductType> findProductsByType(String wineType) throws WineException;
+	
+	 Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException;
+	 Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes) throws WineException;
 }
+
