@@ -27,4 +27,6 @@ public interface IBuProduct {
     
     List<Product> getPromotedProductsSelection() throws WineException;
     List<Product> findExpensive(double min) throws WineException;
+    
+
 }
