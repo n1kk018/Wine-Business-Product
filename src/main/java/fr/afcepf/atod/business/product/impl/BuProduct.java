@@ -5,6 +5,11 @@
  */
 package fr.afcepf.atod.business.product.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.afcepf.atod.business.product.api.IBuProduct;
 import fr.afcepf.atod.vin.data.exception.WineErrorCode;
 import fr.afcepf.atod.vin.data.exception.WineException;
@@ -12,12 +17,8 @@ import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
 import fr.afcepf.atod.wine.data.product.api.IDaoProductType;
 import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
-
-import java.util.List;
-
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import fr.afcepf.atod.wine.entity.ProductVarietal;
+import fr.afcepf.atod.wine.entity.ProductVintage;
 
 /**
  *
@@ -104,6 +105,71 @@ public class BuProduct implements IBuProduct {
                     "no promoted item referenced in db");
         }
         return list;
+	}
+
+	@Override
+	public List<Product> findProductsByName(String name) throws WineException {
+		List<Product> list=null;
+		try {
+			list =daoProduct.findByNotCompleteName(name);
+		} catch (Exception e) {
+			throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+		}
+		return list;
+	}
+
+	@Override
+	public List<Product> findProductsByAppelation(String appelation) throws WineException {
+		List<Product> list=null;
+		try {
+			list =daoProduct.findByAppelation(appelation);
+		} catch (Exception e) {
+			throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProductVintage> findProductsByVintage(Integer vintage) throws WineException {
+		List<ProductVintage> list=null;
+		try {
+			list=daoProduct.findByVintage(vintage);
+		} catch (Exception e) {
+			throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProductVarietal> findProductsBy(String variatal) throws WineException {
+		List<ProductVarietal> list=null;
+		try {
+			list=daoProduct.findByVariatal(variatal);
+		} catch (Exception e) {
+			throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProductType> findProductsByType(String wineType) throws WineException {
+		List<ProductType> list=null;
+		try {
+			list=daoProduct.findByType(wineType);
+		} catch (Exception e) {
+			throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+		}
+		return list;
 	}
 
 }

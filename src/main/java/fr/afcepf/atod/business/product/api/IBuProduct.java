@@ -10,6 +10,8 @@ import java.util.List;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
+import fr.afcepf.atod.wine.entity.ProductVarietal;
+import fr.afcepf.atod.wine.entity.ProductVintage;
 
 import java.util.List;
 
@@ -30,4 +32,14 @@ public interface IBuProduct {
     List<Product> getPromotedProductsSelection() throws WineException;
     List<Product> findExpensive(double min) throws WineException;
     List<ProductType> getWineTypes() throws WineException;
+    
+    List<Product> findProductsByName(String name) throws WineException;
+    
+	List<Product> findProductsByAppelation(String appelation) throws WineException;
+
+	List<ProductVintage> findProductsByVintage(Integer vintage) throws WineException;
+
+	List<ProductVarietal> findProductsBy(String variatal) throws WineException;
+	
+	List<ProductType> findProductsByType(String wineType) throws WineException;
 }
