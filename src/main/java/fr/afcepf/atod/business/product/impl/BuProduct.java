@@ -9,7 +9,9 @@ import fr.afcepf.atod.business.product.api.IBuProduct;
 import fr.afcepf.atod.vin.data.exception.WineErrorCode;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
+import fr.afcepf.atod.wine.data.product.api.IDaoProductType;
 import fr.afcepf.atod.wine.entity.Product;
+import fr.afcepf.atod.wine.entity.ProductType;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class BuProduct implements IBuProduct {
 
     @Autowired
     private IDaoProduct daoProduct;
+    @Autowired
+    private IDaoProductType daoProductType;
     private static final int MAX_SE = 10;
 
     @Override
@@ -86,6 +90,19 @@ public class BuProduct implements IBuProduct {
                     "no promoted item referenced in db");
         }
         
+        return list;
+	}
+
+	@Override
+	public List<ProductType> getWineTypes() throws WineException {
+		List<ProductType> list = null;
+		try {
+            list = daoProductType.findAllObj();
+        } catch (Exception e)  {
+            throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "no promoted item referenced in db");
+        }
         return list;
 	}
 
