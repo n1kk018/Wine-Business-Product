@@ -21,31 +21,35 @@ import java.util.List;
  * @author ronan
  */
 public interface IBuProduct {
-    /**
-     * methode pour trouver un vin par
-     * son nom
-     * @param name
-     * @return 
-     * @throws fr.afcepf.atod.vin.data.exception.WineException 
-     */
-    Product findByName(String name) throws WineException;
-    Product findById(Integer id) throws WineException;
-    
-    List<Product> getPromotedProductsSelection() throws WineException;
-    List<Product> findExpensive(double min) throws WineException;
-    List<ProductType> getWineTypes() throws WineException;
-    
-    List<Product> findProductsByName(String name) throws WineException;
-    
+	/**
+	 * methode pour trouver un vin par son nom
+	 * 
+	 * @param name
+	 * @return
+	 * @throws fr.afcepf.atod.vin.data.exception.WineException
+	 */
+	Product findByName(String name) throws WineException;
+
+	Product findById(Integer id) throws WineException;
+
+	List<Product> getPromotedProductsSelection() throws WineException;
+
+	List<Product> findExpensive(double min) throws WineException;
+
+	List<ProductType> getWineTypes() throws WineException;
+
+	List<Product> findProductsByName(String name) throws WineException;
+
 	List<Product> findProductsByAppelation(String appelation) throws WineException;
 
 	List<ProductVintage> findProductsByVintage(Integer vintage) throws WineException;
 
 	List<ProductVarietal> findProductsBy(String variatal) throws WineException;
-	
-	List<ProductType> findProductsByType(String wineType) throws WineException;
-	
-	 Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException;
-	 Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes) throws WineException;
-}
 
+	List<ProductType> findProductsByType(String wineType) throws WineException;
+
+	Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException;
+
+	Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes) throws WineException;
+
+}
