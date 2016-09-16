@@ -29,6 +29,7 @@ public interface IBuProduct {
      * @throws fr.afcepf.atod.vin.data.exception.WineException 
      */
     Product findByName(String name) throws WineException;
+    Product findById(Integer id) throws WineException;
     
     List<Product> getPromotedProductsSelection() throws WineException;
     List<Product> findExpensive(double min) throws WineException;
