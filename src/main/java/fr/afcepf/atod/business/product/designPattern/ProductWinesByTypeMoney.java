@@ -49,5 +49,13 @@ public class ProductWinesByTypeMoney implements IVisitable {
     public void setChoicePrice(int choicePrice) {
         this.choicePrice = choicePrice;
     }
+
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
+    }
     
 }

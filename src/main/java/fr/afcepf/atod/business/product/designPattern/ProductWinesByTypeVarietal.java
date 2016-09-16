@@ -35,7 +35,7 @@ public class ProductWinesByTypeVarietal  implements IVisitable {
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
-    public List<ProductWine> getWinesByTypeMoney(){
+    public List<ProductWine> getWinesByTypeVarietal(){
         // call daoProduct to get wines according
         // to the type / varietal
         return winesByTypeVarietal;
@@ -57,13 +57,5 @@ public class ProductWinesByTypeVarietal  implements IVisitable {
 
     public void setVarietal(ProductVarietal varietal) {
         this.varietal = varietal;
-    }
-
-    public List<ProductWine> getWinesByTypeVarietal() {
-        return winesByTypeVarietal;
-    }
-
-    public void setWinesByTypeVarietal(List<ProductWine> winesByTypeVarietal) {
-        this.winesByTypeVarietal = winesByTypeVarietal;
     }
 }
