@@ -21,6 +21,8 @@ import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
+import fr.afcepf.atod.wine.entity.ProductWine;
+import java.util.ArrayList;
 
 /**
  *
@@ -162,7 +164,7 @@ public class BuProduct implements IBuProduct {
     }
 
     @Override
-    public List<ProductType> findProductsByType(String wineType) throws WineException {
+    public List<ProductType> findProductsType(String wineType) throws WineException {
         List<ProductType> list = null;
         try {
             list = daoProduct.findByType(wineType);
@@ -216,6 +218,25 @@ public class BuProduct implements IBuProduct {
                     "not referenced in db");
         }
 		return prod;
-	}
+	}    
+
+    @Override
+    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o) throws WineException {
+       List<ProductWine> listeWines  = new ArrayList<ProductWine>();
+       if (!type.getType().equalsIgnoreCase("") && 
+               o.getClass().isInstance(ProductVarietal.class)) {
+           
+       } else if (!type.getType().equalsIgnoreCase("") && 
+               o.getClass().isInstance(String.class)) {
+           
+       } else if (!type.getType().equalsIgnoreCase("") && 
+               o.getClass().isInstance(Integer.class)) {
+            
+       } else {
+           throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                   "pas de recherche trouve selon appelation");
+       }
+       return listeWines;
+    }
 
 }
