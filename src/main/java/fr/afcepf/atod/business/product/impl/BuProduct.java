@@ -205,4 +205,17 @@ public class BuProduct implements IBuProduct {
         return map;
     }
 
+	@Override
+	public Product findById(Integer id) throws WineException {
+		Product prod = null;
+		try{
+			prod = daoProduct.findObj(id);
+		}catch (Exception e)  {
+            throw new WineException(
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    "not referenced in db");
+        }
+		return prod;
+	}
+
 }
