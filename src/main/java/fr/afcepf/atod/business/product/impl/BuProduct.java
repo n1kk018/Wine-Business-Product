@@ -30,13 +30,15 @@ import java.util.ArrayList;
  * @author ronan
  */
 @Service
-public class BuProduct implements IBuProduct {
+public class BuProduct implements IBuProduct, IGetWinesParameters {
 
     @Autowired
     protected IDaoProduct daoProduct;
     @Autowired
     private IDaoProductType daoProductType;
     private static final int MAX_SE = 10;
+    private List<ProductWine> wines = null;
+    private static final int STEP_INT = 50;
 
     @Override
     public Product findByName(String name) throws WineException {
@@ -222,25 +224,70 @@ public class BuProduct implements IBuProduct {
     }
 
     @Override
-    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o) 
+    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o)
             throws WineException {
-       List<ProductWine> listeWines = new ArrayList<>(); 
-       IGetWinesParameters getWines = new GetWinesParameters();
-     if (!type.getType().equalsIgnoreCase("")){
-         listeWines = getWines.getWinesParameters(type, o);
-         if (listeWines.isEmpty()) {
-             throw  new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
-                 "Pas de produits trouves selon les parametres: " 
-                  + type.getType());
-         }
-     } else {
-         throw  new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
-                 "Pas de produits trouves selon les parametres: " 
-                  + type.getType());
-     }        
-        return listeWines;
+        wines = new ArrayList<>();
+        if (!type.getType().equalsIgnoreCase("")) {
+            wines = getWinesParameters(type, o);
+            if (wines != null && wines.isEmpty()) {
+                throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                        "Pas de produits trouves selon les parametres: "
+                        + type.getType());
+            }
+        } else {
+            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "Pas de produits trouves selon les parametres: "
+                    + type.getType());
+        }
+        return wines;
     }
 
-   
+    @Override
+    public List<ProductWine> getWinesParameters(ProductType type, Object o) throws WineException {
+        wines = new ArrayList<ProductWine>();
+        if (o instanceof ProductVarietal) {
+            ProductVarietal varietal = (ProductVarietal) o;
+            wines = getWinesParameters(type, varietal);
+        } else if (o instanceof ProductVintage) {
+            ProductVintage vintage = (ProductVintage) o;
+            wines = getWinesParameters(type, vintage);
+        } else if (o instanceof Integer) {
+            wines = getWinesParameters(type, o);
+        } else {
+            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "Pas de bouteille de type : " + type.getType());
+        }
+        return wines;
+    }
 
+    @Override
+    public List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal)
+            throws WineException {
+        wines = new ArrayList<ProductWine>();
+        wines = daoProduct.findByVarietalAndType(type, varietal);
+        return wines;
+    }
+
+    @Override
+    public List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage)
+            throws WineException {
+        wines = new ArrayList<ProductWine>();
+        wines = daoProduct.findByVintageAndType(type, vintage);
+        return wines;
+    }
+
+    @Override
+    public List<ProductWine> getWinesParameters(ProductType type, Integer integ)
+            throws WineException {
+        wines = new ArrayList<ProductWine>();
+        switch (integ) {
+            case 0:
+                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE);
+            case MAX_SE:
+                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE);
+            case 2*MAX_SE:
+                wines = daoProduct.findByMoneyAndType(type, integ);
+        }
+        return wines;
+    }
 }

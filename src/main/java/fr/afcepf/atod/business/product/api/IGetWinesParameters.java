@@ -17,6 +17,13 @@ import java.util.List;
  * @author ronan
  */
 public interface IGetWinesParameters {
+    /**
+     * 
+     * @param type
+     * @param o
+     * @return
+     * @throws WineException 
+     */
      List<ProductWine> getWinesParameters(ProductType type, Object o)
             throws WineException;
     /**
