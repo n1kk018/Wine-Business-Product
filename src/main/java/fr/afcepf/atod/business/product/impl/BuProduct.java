@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.afcepf.atod.business.product.api.IBuProduct;
+import fr.afcepf.atod.business.product.api.IGetWinesParameters;
 import fr.afcepf.atod.vin.data.exception.WineErrorCode;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 public class BuProduct implements IBuProduct {
 
     @Autowired
-    private IDaoProduct daoProduct;
+    protected IDaoProduct daoProduct;
     @Autowired
     private IDaoProductType daoProductType;
     private static final int MAX_SE = 10;
@@ -207,36 +208,39 @@ public class BuProduct implements IBuProduct {
         return map;
     }
 
-	@Override
-	public Product findById(Integer id) throws WineException {
-		Product prod = null;
-		try{
-			prod = daoProduct.findObj(id);
-		}catch (Exception e)  {
+    @Override
+    public Product findById(Integer id) throws WineException {
+        Product prod = null;
+        try {
+            prod = daoProduct.findObj(id);
+        } catch (Exception e) {
             throw new WineException(
-                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE, 
+                    WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                     "not referenced in db");
         }
-		return prod;
-	}    
+        return prod;
+    }
 
     @Override
-    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o) throws WineException {
-       List<ProductWine> listeWines  = new ArrayList<ProductWine>();
-       if (!type.getType().equalsIgnoreCase("") && 
-               o.getClass().isInstance(ProductVarietal.class)) {
-           
-       } else if (!type.getType().equalsIgnoreCase("") && 
-               o.getClass().isInstance(String.class)) {
-           
-       } else if (!type.getType().equalsIgnoreCase("") && 
-               o.getClass().isInstance(Integer.class)) {
-            
-       } else {
-           throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
-                   "pas de recherche trouve selon appelation");
-       }
-       return listeWines;
+    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o) 
+            throws WineException {
+       List<ProductWine> listeWines = new ArrayList<ProductWine>(); 
+       IGetWinesParameters getWines = new GetWinesParameters();
+     if (!type.getType().equalsIgnoreCase("")){
+         listeWines = getWines.getWinesParameters(type, o);
+         if (listeWines.isEmpty()) {
+             throw  new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                 "Pas de produits trouves selon les parametres: " 
+                  + type.getType());
+         }
+     } else {
+         throw  new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                 "Pas de produits trouves selon les parametres: " 
+                  + type.getType());
+     }        
+        return listeWines;
     }
+
+   
 
 }
