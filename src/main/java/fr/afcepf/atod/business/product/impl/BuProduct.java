@@ -155,7 +155,7 @@ public class BuProduct implements IBuProduct {
     public List<ProductVarietal> findProductsBy(String variatal) throws WineException {
         List<ProductVarietal> list = null;
         try {
-            list = daoProduct.findByVariatal(variatal);
+            list = daoProduct.findByVarietal(variatal);
         } catch (Exception e) {
             throw new WineException(
                     WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
@@ -224,7 +224,7 @@ public class BuProduct implements IBuProduct {
     @Override
     public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o) 
             throws WineException {
-       List<ProductWine> listeWines = new ArrayList<ProductWine>(); 
+       List<ProductWine> listeWines = new ArrayList<>(); 
        IGetWinesParameters getWines = new GetWinesParameters();
      if (!type.getType().equalsIgnoreCase("")){
          listeWines = getWines.getWinesParameters(type, o);
