@@ -24,6 +24,7 @@ import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
 import fr.afcepf.atod.wine.entity.ProductWine;
 import java.util.ArrayList;
+import org.springframework.util.ClassUtils;
 
 /**
  *
@@ -36,9 +37,9 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     protected IDaoProduct daoProduct;
     @Autowired
     private IDaoProductType daoProductType;
-    private static final int MAX_SE = 10;
+    private static final int MAX_SE = 50;
     private List<ProductWine> wines = null;
-    private static final int STEP_INT = 50;
+    //private static final int STEP_INT = 50;
 
     @Override
     public Product findByName(String name) throws WineException {
@@ -181,7 +182,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
 
     @Override
     public Map<ProductType, List<String>> getAppellationsByType(List<ProductType> wineTypes) throws WineException {
-        Map<ProductType, List<String>> map = new HashMap<ProductType, List<String>>();
+        Map<ProductType, List<String>> map = new HashMap<>();
         try {
             for (ProductType productType : wineTypes) {
                 map.put(productType, daoProduct.getAppellationsByWineType(productType));
@@ -197,7 +198,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     @Override
     public Map<ProductType, List<ProductVarietal>> getVarietalsByType(List<ProductType> wineTypes)
             throws WineException {
-        Map<ProductType, List<ProductVarietal>> map = new HashMap<ProductType, List<ProductVarietal>>();
+        Map<ProductType, List<ProductVarietal>> map = new HashMap<>();
         try {
             for (ProductType productType : wineTypes) {
                 map.put(productType, daoProduct.getVarietalsByWineType(productType));
@@ -244,15 +245,20 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
 
     @Override
     public List<ProductWine> getWinesParameters(ProductType type, Object o) throws WineException {
-        wines = new ArrayList<ProductWine>();
+        wines = new ArrayList<>();
         if (o instanceof ProductVarietal) {
             ProductVarietal varietal = (ProductVarietal) o;
             wines = getWinesParameters(type, varietal);
         } else if (o instanceof ProductVintage) {
             ProductVintage vintage = (ProductVintage) o;
             wines = getWinesParameters(type, vintage);
-        } else if (o instanceof Integer) {
-            wines = getWinesParameters(type, o);
+        } else if (ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
+            if(o.getClass().isPrimitive()) {
+                wines = getWinesParameters(type,o);
+            } else {    
+                Integer i = (int) o;
+                wines = getWinesParameters(type, i);
+            }
         } else {
             throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                     "Pas de bouteille de type : " + type.getType());
@@ -263,7 +269,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     @Override
     public List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal)
             throws WineException {
-        wines = new ArrayList<ProductWine>();
+        wines = new ArrayList<>();
         wines = daoProduct.findByVarietalAndType(type, varietal);
         return wines;
     }
@@ -271,7 +277,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     @Override
     public List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage)
             throws WineException {
-        wines = new ArrayList<ProductWine>();
+        wines = new ArrayList<>();
         wines = daoProduct.findByVintageAndType(type, vintage);
         return wines;
     }
@@ -279,14 +285,21 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     @Override
     public List<ProductWine> getWinesParameters(ProductType type, Integer integ)
             throws WineException {
-        wines = new ArrayList<ProductWine>();
+        wines = new ArrayList<>();
         switch (integ) {
             case 0:
                 wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE);
+                break;
             case MAX_SE:
-                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE);
+                wines = daoProduct.findByMoneyAndType(type, integ,
+                        integ + MAX_SE);
+                break;
             case 2*MAX_SE:
                 wines = daoProduct.findByMoneyAndType(type, integ);
+                break;
+            default:
+                break;
+                
         }
         return wines;
     }

@@ -37,7 +37,10 @@ public class TestBu {
                     List<ProductVarietal> listVarietal = e.getValue();
                     for(ProductVarietal prod : listVarietal) {
                         wines = buProductbis.categoryAccordingToObjectType(e.getKey(), 
-                                prod);
+                                50);
+                        for (ProductWine wine : wines) {
+                            log.info("\t # wine: " + wine.getDescription());
+                        }
                     }
                 }
                 
