@@ -10,7 +10,7 @@ import fr.afcepf.atod.wine.entity.Adress;
 import java.io.Serializable;
 
 @Service
-public class BuAdress implements IBuAdress,  Serializable{
+public class BuAdress implements IBuAdress {
 	
 	@Autowired
 	private IDaoAdress daoAdress;

@@ -13,7 +13,7 @@ import fr.afcepf.atod.wine.entity.City;
 import java.io.Serializable;
 
 @Service
-public class BuCity implements IBuCity,  Serializable{
+public class BuCity implements IBuCity {
 
 	
 	@Autowired

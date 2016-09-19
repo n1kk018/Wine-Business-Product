@@ -32,7 +32,7 @@ import org.springframework.util.ClassUtils;
  * @author ronan
  */
 @Service
-public class BuProduct implements IBuProduct, IGetWinesParameters,  Serializable {
+public class BuProduct implements IBuProduct, IGetWinesParameters {
 
     @Autowired
     protected IDaoProduct daoProduct;
