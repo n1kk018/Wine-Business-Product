@@ -259,7 +259,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
             if(o.getClass().isPrimitive()) {
                 wines = getWinesParameters(type,o,firstRow,rowsPerPage);
             } else {    
-                Integer i = (int) o;
+                Integer i = Integer.valueOf(o.toString());
                 wines = getWinesParameters(type, i,firstRow,rowsPerPage);
             }
         } else {
@@ -334,7 +334,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
             if(o.getClass().isPrimitive()) {
             	count = daoProduct.countByAppellation(type,o);
             } else {    
-                Integer i = (int) o;
+                Integer i = Integer.valueOf(o.toString());
                 if(i==2*MAX_SE)
                 	count = daoProduct.countByMoneyAndType(type, i);
                 else
