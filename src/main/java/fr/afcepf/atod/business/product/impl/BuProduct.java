@@ -39,6 +39,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     private IDaoProductType daoProductType;
     private static final int MAX_SE = 50;
     private List<ProductWine> wines = null;
+    
     //private static final int STEP_INT = 50;
 
     @Override
@@ -225,11 +226,12 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     }
 
     @Override
-    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o)
-            throws WineException {
-        wines = new ArrayList<>();
+    public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o,Integer firstRow,Integer rowsPerPage) throws WineException {
+        System.out.println("categoryAccordingToObjectType");
+    	wines = new ArrayList<>();
         if (!type.getType().equalsIgnoreCase("")) {
-            wines = getWinesParameters(type, o);
+        	System.out.println("chuila");
+            wines = getWinesParameters(type, o,firstRow,rowsPerPage);
             if (wines != null && wines.isEmpty()) {
                 throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                         "Pas de produits trouves selon les parametres: "
@@ -244,58 +246,73 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     }
 
     @Override
-    public List<ProductWine> getWinesParameters(ProductType type, Object o) throws WineException {
-        wines = new ArrayList<>();
+    public List<ProductWine> getWinesParameters(ProductType type, Object o,Integer firstRow,Integer rowsPerPage) throws WineException {
+    	System.out.println("getWinesParameters");
+    	wines = new ArrayList<>();
         if (o instanceof ProductVarietal) {
             ProductVarietal varietal = (ProductVarietal) o;
-            wines = getWinesParameters(type, varietal);
+            wines = getWinesParameters(type, varietal,firstRow,rowsPerPage);
         } else if (o instanceof ProductVintage) {
             ProductVintage vintage = (ProductVintage) o;
-            wines = getWinesParameters(type, vintage);
+            wines = getWinesParameters(type, vintage,firstRow,rowsPerPage);
         } else if (ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
             if(o.getClass().isPrimitive()) {
-                wines = getWinesParameters(type,o);
+                wines = getWinesParameters(type,o,firstRow,rowsPerPage);
             } else {    
                 Integer i = (int) o;
-                wines = getWinesParameters(type, i);
+                wines = getWinesParameters(type, i,firstRow,rowsPerPage);
             }
         } else {
             throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                     "Pas de bouteille de type : " + type.getType());
         }
+    	/*if (o instanceof ProductVarietal) {
+            ProductVarietal varietal = (ProductVarietal) o;
+            wines = getWinesParameters(type, varietal,firstRow,rowsPerPage);
+        } else if (o instanceof ProductVintage) {
+            ProductVintage vintage = (ProductVintage) o;
+            wines = getWinesParameters(type, vintage,firstRow,rowsPerPage);
+        } else if (o instanceof String) {
+            wines = getWinesParameters(type,o,firstRow,rowsPerPage);
+         
+        }else if (o instanceof Integer) {
+            wines = getWinesParameters(type,o,firstRow,rowsPerPage);
+         
+        }else {
+            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "Pas de bouteille de type : " + type.getType());
+        }*/
         return wines;
     }
 
-    @Override
-    public List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal)
+    public List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal, Integer firstRow,Integer rowsPerPage)
             throws WineException {
         wines = new ArrayList<>();
-        wines = daoProduct.findByVarietalAndType(type, varietal);
+        wines = daoProduct.findByVarietalAndType(type, varietal,firstRow,rowsPerPage);
         return wines;
     }
+    
 
-    @Override
-    public List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage)
+    public List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage ,Integer firstRow,Integer rowsPerPage)
             throws WineException {
         wines = new ArrayList<>();
-        wines = daoProduct.findByVintageAndType(type, vintage);
+        wines = daoProduct.findByVintageAndType(type, vintage,firstRow,rowsPerPage);
         return wines;
     }
 
-    @Override
-    public List<ProductWine> getWinesParameters(ProductType type, Integer integ)
+    public List<ProductWine> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage)
             throws WineException {
         wines = new ArrayList<>();
         switch (integ) {
             case 0:
-                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE);
+                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE,firstRow,rowsPerPage);
                 break;
             case MAX_SE:
                 wines = daoProduct.findByMoneyAndType(type, integ,
-                        integ + MAX_SE);
+                        integ + MAX_SE,firstRow,rowsPerPage);
                 break;
             case 2*MAX_SE:
-                wines = daoProduct.findByMoneyAndType(type, integ);
+                wines = daoProduct.findByMoneyAndType(type, integ,firstRow,rowsPerPage);
                 break;
             default:
                 break;
@@ -303,4 +320,30 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         }
         return wines;
     }
+
+	@Override
+	public Integer countCategoryAccordingToObjectType(ProductType type, Object o) throws WineException {
+		Integer count = 0;
+		if (o instanceof ProductVarietal) {
+            ProductVarietal varietal = (ProductVarietal) o;
+            count = daoProduct.countByVarietalAndType(type, varietal);
+        } else if (o instanceof ProductVintage) {
+            ProductVintage vintage = (ProductVintage) o;
+            count = daoProduct.countByVintageAndType(type, vintage);
+        } else if (ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
+            if(o.getClass().isPrimitive()) {
+            	count = daoProduct.countByAppellation(type,o);
+            } else {    
+                Integer i = (int) o;
+                if(i==2*MAX_SE)
+                	count = daoProduct.countByMoneyAndType(type, i);
+                else
+                	count = daoProduct.countByMoneyAndType(type, i,i+MAX_SE);
+            }
+        } else {
+            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "Pas de bouteille de type : " + type.getType());
+        }
+		return count;
+	}
 }

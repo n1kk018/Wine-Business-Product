@@ -25,27 +25,20 @@ public class TestBu {
         IBuProduct buProductbis = (IBuProduct) bf.getBean(IBuProduct.class);
 
         List<ProductType> wineTypes = buProductbis.getWineTypes();
-        List<ProductVintage> vintages = buProductbis.findProductsByVintage(2010);
+        //List<ProductVintage> vintages = buProductbis.findProductsByVintage(2010);
 
-        Map<ProductType, List<ProductVarietal>> varietals
-                = buProductbis.getVarietalsByType(wineTypes);
+        Map<ProductType, List<ProductVarietal>> varietals= buProductbis.getVarietalsByType(wineTypes);
         List<ProductWine> wines = null;
-
-        /*for(Map.Entry<ProductType,List<ProductVarietal>> 
-                        e : varietals.entrySet()){
-                    List<ProductVarietal> listVarietal = e.getValue();
-                    /*for(ProductVarietal prod : listVarietal) {
-                        wines = buProductbis.categoryAccordingToObjectType(e.getKey(), 
-                                50);
-                        for (ProductWine wine : wines) {
-                            log.info("\t # wine: " + wine.getDescription());
-                        }
-                    }   
-                }*/
-        for (ProductVintage vintage : vintages) {
+        log.info(wineTypes);
+        log.info(varietals.get(wineTypes.get(0)));
+        wines = buProductbis.categoryAccordingToObjectType(wineTypes.get(0), varietals.get(wineTypes.get(0)).get(0),0,5);
+        for (ProductWine wine : wines) {
+            log.info("\t # wine: " + wine.getName());
+        }
+        /*for (ProductVintage vintage : vintages) {
             for (ProductType type : wineTypes) {
                 try {
-                    wines = buProductbis.categoryAccordingToObjectType(type, vintage);
+                    wines = buProductbis.categoryAccordingToObjectType(type, vintage,0,5);
                 } catch (Exception e) {
 
                 }
@@ -53,7 +46,7 @@ public class TestBu {
                     log.info("\t # wine: " + wine.getDescription());
                 }
             }
-        }
+        }*/
 
     }
 

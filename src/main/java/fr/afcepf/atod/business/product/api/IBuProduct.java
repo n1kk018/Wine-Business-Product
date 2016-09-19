@@ -113,5 +113,8 @@ public interface IBuProduct {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o) throws WineException;
+    List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o,Integer firstRow,Integer rowsPerPage) throws WineException;
+    
+    Integer countCategoryAccordingToObjectType(ProductType type, Object o) throws WineException;
+
 }

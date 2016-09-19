@@ -24,7 +24,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-     List<ProductWine> getWinesParameters(ProductType type, Object o)
+     List<ProductWine> getWinesParameters(ProductType type, Object o,Integer firstRow,Integer rowsPerPage)
             throws WineException;
     /**
      * 
@@ -33,7 +33,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal)
+    List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal,Integer firstRow,Integer rowsPerPage)
             throws WineException;
     /**
      * 
@@ -42,7 +42,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage)
+    List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage,Integer firstRow,Integer rowsPerPage)
             throws WineException;
     /**
      * 
@@ -51,7 +51,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, Integer integ) 
+    List<ProductWine> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage) 
             throws WineException;
             
 }
