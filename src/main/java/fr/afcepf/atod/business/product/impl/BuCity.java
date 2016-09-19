@@ -10,9 +10,10 @@ import fr.afcepf.atod.business.product.api.IBuCity;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoCity;
 import fr.afcepf.atod.wine.entity.City;
+import java.io.Serializable;
 
 @Service
-public class BuCity implements IBuCity{
+public class BuCity implements IBuCity,  Serializable{
 
 	
 	@Autowired

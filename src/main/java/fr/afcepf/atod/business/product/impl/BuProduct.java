@@ -23,6 +23,7 @@ import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
 import fr.afcepf.atod.wine.entity.ProductWine;
+import java.io.Serializable;
 import java.util.ArrayList;
 import org.springframework.util.ClassUtils;
 
@@ -31,7 +32,7 @@ import org.springframework.util.ClassUtils;
  * @author ronan
  */
 @Service
-public class BuProduct implements IBuProduct, IGetWinesParameters {
+public class BuProduct implements IBuProduct, IGetWinesParameters,  Serializable {
 
     @Autowired
     protected IDaoProduct daoProduct;
