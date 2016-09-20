@@ -96,7 +96,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     		throws WineException {
         List<Product> list = null;
         try {
-            list = daoProduct.getPromotedProductsSortedByEndDate(MAX_SE);
+            list = daoProduct.getPromotedProductsSortedByEndDate(MAX_SE/5);
         } catch (Exception e) {
             throw new WineException(
                     WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
@@ -237,10 +237,8 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     @Override
     public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o,
     		Integer firstRow,Integer rowsPerPage) throws WineException {
-        System.out.println("categoryAccordingToObjectType");
     	wines = new ArrayList<>();
         if (!type.getType().equalsIgnoreCase("")) {
-        	System.out.println("chuila");
             wines = getWinesParameters(type, o,firstRow,rowsPerPage);
             if (wines != null && wines.isEmpty()) {
                 throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
@@ -266,33 +264,24 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         } else if (o instanceof ProductVintage) {
             ProductVintage vintage = (ProductVintage) o;
             wines = getWinesParameters(type, vintage,firstRow,rowsPerPage);
-        } else if (ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
-            if(o.getClass().isPrimitive()) {
-                wines = getWinesParameters(type,o,firstRow,rowsPerPage);
-            } else {    
+        } else if(o instanceof String){    
+                wines = getWinesParameters(type, (String)o,firstRow,rowsPerPage);
+        } else if(o instanceof Integer){    
                 Integer i = Integer.valueOf(o.toString());
                 wines = getWinesParameters(type, i,firstRow,rowsPerPage);
-            }
+        } else if (o==null){
+        	 wines = getWinesParameters(type,firstRow,rowsPerPage);
         } else {
             throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                     "Pas de bouteille de type : " + type.getType());
         }
-    	/*if (o instanceof ProductVarietal) {
-            ProductVarietal varietal = (ProductVarietal) o;
-            wines = getWinesParameters(type, varietal,firstRow,rowsPerPage);
-        } else if (o instanceof ProductVintage) {
-            ProductVintage vintage = (ProductVintage) o;
-            wines = getWinesParameters(type, vintage,firstRow,rowsPerPage);
-        } else if (o instanceof String) {
-            wines = getWinesParameters(type,o,firstRow,rowsPerPage);
-         
-        }else if (o instanceof Integer) {
-            wines = getWinesParameters(type,o,firstRow,rowsPerPage);
-         
-        }else {
-            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
-                    "Pas de bouteille de type : " + type.getType());
-        }*/
+        return wines;
+    }
+    
+    public List<ProductWine> getWinesParameters(ProductType type, Integer firstRow,Integer rowsPerPage)
+            throws WineException {
+        wines = new ArrayList<>();
+        wines = daoProduct.findByType(type,firstRow,rowsPerPage);
         return wines;
     }
 
@@ -300,6 +289,13 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
             throws WineException {
         wines = new ArrayList<>();
         wines = daoProduct.findByVarietalAndType(type, varietal,firstRow,rowsPerPage);
+        return wines;
+    }
+    
+    public List<ProductWine> getWinesParameters(ProductType type, String appellation ,Integer firstRow,Integer rowsPerPage)
+            throws WineException {
+        wines = new ArrayList<>();
+        wines = daoProduct.findByAppelationAndType(type, appellation,firstRow,rowsPerPage);
         return wines;
     }
     
@@ -336,25 +332,43 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
 	public Integer countCategoryAccordingToObjectType(ProductType type, Object o) throws WineException {
 		Integer count = 0;
 		if (o instanceof ProductVarietal) {
-            ProductVarietal varietal = (ProductVarietal) o;
-            count = daoProduct.countByVarietalAndType(type, varietal);
-        } else if (o instanceof ProductVintage) {
-            ProductVintage vintage = (ProductVintage) o;
-            count = daoProduct.countByVintageAndType(type, vintage);
-        } else if (ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
-            if(o.getClass().isPrimitive()) {
-            	count = daoProduct.countByAppellation(type,o);
-            } else {    
-                Integer i = Integer.valueOf(o.toString());
-                if(i==2*MAX_SE)
-                	count = daoProduct.countByMoneyAndType(type, i);
-                else
-                	count = daoProduct.countByMoneyAndType(type, i,i+MAX_SE);
-            }
-        } else {
-            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
-                    "Pas de bouteille de type : " + type.getType());
-        }
+			ProductVarietal varietal = (ProductVarietal) o;
+			count = daoProduct.countByVarietalAndType(type, varietal);
+		} else if (o instanceof ProductVintage) {
+			ProductVintage vintage = (ProductVintage) o;
+			count = daoProduct.countByVintageAndType(type, vintage);
+		} else if (o instanceof String) {
+			count = daoProduct.countByAppellationAndType(type, (String) o);
+		} else if (o instanceof Integer) {
+			Integer i = Integer.valueOf(o.toString());
+			if (i == 2 * MAX_SE)
+				count = daoProduct.countByMoneyAndType(type, i);
+			else
+				count = daoProduct.countByMoneyAndType(type, i, i + MAX_SE);
+		} else if (o == null) {
+			count = daoProduct.countByType(type);
+		} else {
+			throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+					"Pas de bouteille de type : " + type.getType());
+		}
 		return count;
+	}
+
+	@Override
+	public Map<ProductType, Map<Integer, Integer>> getPricesRepartitionByType(List<ProductType> wineTypes)
+			throws WineException {
+		Map<ProductType, Map<Integer, Integer>> map = new HashMap<>();
+        try {
+            for (ProductType productType : wineTypes) {
+            	Map<Integer, Integer> pricemap = new HashMap<Integer, Integer>();
+            	pricemap.put(0, daoProduct.countByMoneyAndType(productType, 0,50));
+            	pricemap.put(50, daoProduct.countByMoneyAndType(productType, 50,100));
+            	pricemap.put(100, daoProduct.countByMoneyAndType(productType, 100));
+                map.put(productType, pricemap);
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return map;
 	}
 }
