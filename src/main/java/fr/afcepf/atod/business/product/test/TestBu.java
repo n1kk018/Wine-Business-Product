@@ -28,13 +28,16 @@ public class TestBu {
         //List<ProductVintage> vintages = buProductbis.findProductsByVintage(2010);
 
         Map<ProductType, List<String>> appellations= buProductbis.getAppellationsByType(wineTypes);
-        List<ProductWine> wines = null;
+        Map<ProductType, Map<Integer,Integer>> prices= buProductbis.getPricesRepartitionByType(wineTypes);
+        
+        log.info( prices.get(wineTypes.get(0)));
+        /*List<ProductWine> wines = null;
         log.info(wineTypes);
         log.info(appellations.get(wineTypes.get(0)));
         wines = buProductbis.categoryAccordingToObjectType(wineTypes.get(0), appellations.get(wineTypes.get(0)).get(0),0,5);
         for (ProductWine wine : wines) {
             log.info("\t # wine: " + wine.getName());
-        }
+        }*/
         /*for (ProductVintage vintage : vintages) {
             for (ProductType type : wineTypes) {
                 try {
