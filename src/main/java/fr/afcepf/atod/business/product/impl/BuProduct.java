@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import fr.afcepf.atod.business.product.api.IBuProduct;
 import fr.afcepf.atod.business.product.api.IGetWinesParameters;
+import fr.afcepf.atod.business.product.designpattern.visitor.ProductBase;
+import fr.afcepf.atod.business.product.designpattern.visitor.IVisitable;
+import fr.afcepf.atod.business.product.designpattern.visitor.ProductsVisitor;
 import fr.afcepf.atod.vin.data.exception.WineErrorCode;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
@@ -23,9 +26,7 @@ import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
 import fr.afcepf.atod.wine.entity.ProductWine;
-import java.io.Serializable;
 import java.util.ArrayList;
-import org.springframework.util.ClassUtils;
 
 /**
  *
@@ -307,7 +308,8 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         return wines;
     }
 
-    public List<ProductWine> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage)
+    public List<ProductWine> getWinesParameters(ProductType type, Integer integ, 
+            Integer firstRow, Integer rowsPerPage)
             throws WineException {
         wines = new ArrayList<>();
         switch (integ) {
@@ -329,7 +331,8 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     }
 
 	@Override
-	public Integer countCategoryAccordingToObjectType(ProductType type, Object o) throws WineException {
+	public Integer countCategoryAccordingToObjectType(ProductType type, Object o) 
+                    throws WineException {
 		Integer count = 0;
 		if (o instanceof ProductVarietal) {
 			ProductVarietal varietal = (ProductVarietal) o;
@@ -371,4 +374,24 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         }
         return map;
 	}
+        
+        // point d'entree du design pattern visiteur
+        
+        public List<ProductWine> getWines(ProductType type, Object o,
+                Integer firstRow,Integer rowsPerPage) throws WineException {
+            wines = new ArrayList<>();
+            Integer count = 0;
+            ProductsVisitor productsVisitor = new ProductsVisitor();
+            ProductBase produitGlobal = new ProductBase(type, firstRow, rowsPerPage);
+            
+            if (o instanceof IVisitable) { 
+                ((IVisitable) o).accept(productsVisitor);
+                wines = productsVisitor.getWines();
+                count = productsVisitor.getCount();
+            } else {
+                throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+					"Pas de bouteille de type : " + type.getType());
+            }
+            return wines;
+        }
 }
