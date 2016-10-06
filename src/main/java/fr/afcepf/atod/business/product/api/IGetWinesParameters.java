@@ -24,7 +24,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-     List<ProductWine> getWinesParameters(ProductType type, Object o,Integer firstRow,Integer rowsPerPage)
+     List<ProductWine> getWinesParameters(ProductType type, Object o,Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException;
     /**
      * 
