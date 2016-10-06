@@ -237,10 +237,10 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
 
     @Override
     public List<ProductWine> categoryAccordingToObjectType(ProductType type, Object o,
-    		Integer firstRow,Integer rowsPerPage) throws WineException {
+    		Integer firstRow,Integer rowsPerPage, String sorting) throws WineException {
     	wines = new ArrayList<>();
         if (!type.getType().equalsIgnoreCase("")) {
-            wines = getWinesParameters(type, o,firstRow,rowsPerPage);
+            wines = getWinesParameters(type, o,firstRow,rowsPerPage, sorting);
             if (wines != null && wines.isEmpty()) {
                 throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                         "Pas de produits trouves selon les parametres: "
@@ -256,7 +256,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
 
     @Override
     public List<ProductWine> getWinesParameters(ProductType type, Object o,
-    		Integer firstRow,Integer rowsPerPage) throws WineException {
+    		Integer firstRow,Integer rowsPerPage, String sorting) throws WineException {
     	System.out.println("getWinesParameters");
     	wines = new ArrayList<>();
         if (o instanceof ProductVarietal) {
@@ -271,7 +271,7 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
                 Integer i = Integer.valueOf(o.toString());
                 wines = getWinesParameters(type, i,firstRow,rowsPerPage);
         } else if (o==null){
-        	 wines = getWinesParameters(type,firstRow,rowsPerPage);
+        	 wines = getWinesParameters(type,firstRow,rowsPerPage,sorting);
         } else {
             throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
                     "Pas de bouteille de type : " + type.getType());
@@ -279,10 +279,10 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         return wines;
     }
     
-    public List<ProductWine> getWinesParameters(ProductType type, Integer firstRow,Integer rowsPerPage)
+    public List<ProductWine> getWinesParameters(ProductType type, Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException {
         wines = new ArrayList<>();
-        wines = daoProduct.findByType(type,firstRow,rowsPerPage);
+        wines = daoProduct.findByType(type,firstRow,rowsPerPage,sorting.split("_")[0],sorting.split("_")[1]);
         return wines;
     }
 
