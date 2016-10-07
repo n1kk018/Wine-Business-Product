@@ -33,7 +33,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal,Integer firstRow,Integer rowsPerPage)
+    List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal,Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException;
     /**
      * 
@@ -51,7 +51,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage) 
+    List<ProductWine> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage,String sorting) 
             throws WineException;
             
 }

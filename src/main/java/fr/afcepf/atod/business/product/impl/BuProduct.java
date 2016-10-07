@@ -261,15 +261,15 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
     	wines = new ArrayList<>();
         if (o instanceof ProductVarietal) {
             ProductVarietal varietal = (ProductVarietal) o;
-            wines = getWinesParameters(type, varietal,firstRow,rowsPerPage);
+            wines = getWinesParameters(type, varietal,firstRow,rowsPerPage,sorting);
         } else if (o instanceof ProductVintage) {
             ProductVintage vintage = (ProductVintage) o;
             wines = getWinesParameters(type, vintage,firstRow,rowsPerPage);
         } else if(o instanceof String){    
-                wines = getWinesParameters(type, (String)o,firstRow,rowsPerPage);
+                wines = getWinesParameters(type, (String)o,firstRow,rowsPerPage,sorting);
         } else if(o instanceof Integer){    
                 Integer i = Integer.valueOf(o.toString());
-                wines = getWinesParameters(type, i,firstRow,rowsPerPage);
+                wines = getWinesParameters(type, i, firstRow, rowsPerPage, sorting);
         } else if (o==null){
         	 wines = getWinesParameters(type,firstRow,rowsPerPage,sorting);
         } else {
@@ -286,17 +286,17 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         return wines;
     }
 
-    public List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal, Integer firstRow,Integer rowsPerPage)
+    public List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal, Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException {
         wines = new ArrayList<>();
-        wines = daoProduct.findByVarietalAndType(type, varietal,firstRow,rowsPerPage);
+        wines = daoProduct.findByVarietalAndType(type, varietal,firstRow,rowsPerPage,sorting.split("_")[0],sorting.split("_")[1]);
         return wines;
     }
     
-    public List<ProductWine> getWinesParameters(ProductType type, String appellation ,Integer firstRow,Integer rowsPerPage)
+    public List<ProductWine> getWinesParameters(ProductType type, String appellation ,Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException {
         wines = new ArrayList<>();
-        wines = daoProduct.findByAppelationAndType(type, appellation,firstRow,rowsPerPage);
+        wines = daoProduct.findByAppelationAndType(type, appellation,firstRow,rowsPerPage,sorting.split("_")[0],sorting.split("_")[1]);
         return wines;
     }
     
@@ -308,20 +308,18 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         return wines;
     }
 
-    public List<ProductWine> getWinesParameters(ProductType type, Integer integ, 
-            Integer firstRow, Integer rowsPerPage)
+    public List<ProductWine> getWinesParameters(ProductType type, Integer integ, Integer firstRow, Integer rowsPerPage, String sorting)
             throws WineException {
         wines = new ArrayList<>();
         switch (integ) {
             case 0:
-                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE,firstRow,rowsPerPage);
+                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE,firstRow,rowsPerPage,sorting.split("_")[0],sorting.split("_")[1]);
                 break;
             case MAX_SE:
-                wines = daoProduct.findByMoneyAndType(type, integ,
-                        integ + MAX_SE,firstRow,rowsPerPage);
+                wines = daoProduct.findByMoneyAndType(type, integ, integ + MAX_SE,firstRow,rowsPerPage,sorting.split("_")[0],sorting.split("_")[1]);
                 break;
             case 2*MAX_SE:
-                wines = daoProduct.findByMoneyAndType(type, integ,firstRow,rowsPerPage);
+                wines = daoProduct.findByMoneyAndType(type, integ,firstRow,rowsPerPage,sorting.split("_")[0],sorting.split("_")[1]);
                 break;
             default:
                 break;
