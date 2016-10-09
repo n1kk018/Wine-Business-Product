@@ -279,6 +279,18 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         return wines;
     }
     
+    @Override
+    public void flushCurrentHibernateSession()
+    {
+        daoProduct.getSf().getCurrentSession().flush();
+    }
+    
+    @Override
+    public void refreshLocalizedObject(Object o)
+    {
+        daoProduct.getSf().getCurrentSession().refresh(o);
+    }
+    
     public List<ProductWine> getWinesParameters(ProductType type, Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException {
         wines = new ArrayList<>();
