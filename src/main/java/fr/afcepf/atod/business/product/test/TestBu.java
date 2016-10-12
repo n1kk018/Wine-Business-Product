@@ -32,7 +32,7 @@ public class TestBu {
         }
         Locale.setDefault(Locale.US);
         for (ProductType productType : wineTypes) {
-            buProductbis.refreshLocalizedObject(productType);
+           // buProductbis.refreshLocalizedObject(productType);
             log.info(productType.getType());
         }
         //List<ProductVintage> vintages = buProductbis.findProductsByVintage(2010);

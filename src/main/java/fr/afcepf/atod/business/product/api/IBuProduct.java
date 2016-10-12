@@ -118,6 +118,4 @@ public interface IBuProduct {
     Integer countCategoryAccordingToObjectType(ProductType type, Object o) throws WineException;
     
     Map<ProductType,Map<Integer, Integer>> getPricesRepartitionByType(List<ProductType> wineTypes) throws WineException;
-    void refreshLocalizedObject(Object paramO);
-    void flushCurrentHibernateSession();
 }
