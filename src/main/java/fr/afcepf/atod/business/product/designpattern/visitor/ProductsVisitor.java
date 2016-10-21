@@ -7,6 +7,7 @@ package fr.afcepf.atod.business.product.designpattern.visitor;
 
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
+import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductWine;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ProductsVisitor implements
     @Autowired
     private IDaoProduct daoProduct;
     private Integer count;
-    private List<ProductWine> wines;
+    private List<Product> wines;
     
     public ProductsVisitor() {
         super();
@@ -64,11 +65,11 @@ public class ProductsVisitor implements
         this.count = count;
     }
 
-    public List<ProductWine> getWines() {
+    public List<Product> getWines() {
         return wines;
     }
 
-    public void setWines(List<ProductWine> wines) {
+    public void setWines(List<Product> wines) {
         this.wines = wines;
     }    
 }

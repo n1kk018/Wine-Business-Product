@@ -6,6 +6,7 @@
 package fr.afcepf.atod.business.product.api;
 
 import fr.afcepf.atod.vin.data.exception.WineException;
+import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
@@ -24,7 +25,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-     List<ProductWine> getWinesParameters(ProductType type, Object o,Integer firstRow,Integer rowsPerPage, String sorting)
+     List<Product> getWinesParameters(ProductType type, Object o,Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException;
     /**
      * 
@@ -33,7 +34,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, ProductVarietal varietal,Integer firstRow,Integer rowsPerPage, String sorting)
+    List<Product> getWinesParameters(ProductType type, ProductVarietal varietal,Integer firstRow,Integer rowsPerPage, String sorting)
             throws WineException;
     /**
      * 
@@ -42,7 +43,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, ProductVintage vintage,Integer firstRow,Integer rowsPerPage)
+    List<Product> getWinesParameters(ProductType type, ProductVintage vintage,Integer firstRow,Integer rowsPerPage)
             throws WineException;
     /**
      * 
@@ -51,7 +52,7 @@ public interface IGetWinesParameters {
      * @return
      * @throws WineException 
      */
-    List<ProductWine> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage,String sorting) 
+    List<Product> getWinesParameters(ProductType type, Integer integ,Integer firstRow,Integer rowsPerPage,String sorting) 
             throws WineException;
             
 }
