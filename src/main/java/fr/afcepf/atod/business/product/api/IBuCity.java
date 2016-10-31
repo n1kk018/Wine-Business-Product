@@ -7,4 +7,6 @@ import fr.afcepf.atod.wine.entity.City;
 
 public interface IBuCity {
 	List<City> findAllCities() throws WineException;
+	
+	City addNewCity(City city) throws WineException;
 }

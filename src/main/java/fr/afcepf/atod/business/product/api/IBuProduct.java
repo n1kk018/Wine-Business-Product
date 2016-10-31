@@ -13,9 +13,7 @@ import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
-import fr.afcepf.atod.wine.entity.ProductWine;
 
-import java.util.List;
 
 /**
  *

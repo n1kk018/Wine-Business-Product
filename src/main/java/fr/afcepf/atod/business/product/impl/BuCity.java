@@ -10,7 +10,6 @@ import fr.afcepf.atod.business.product.api.IBuCity;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoCity;
 import fr.afcepf.atod.wine.entity.City;
-import java.io.Serializable;
 
 @Service
 public class BuCity implements IBuCity {
@@ -29,5 +28,17 @@ public class BuCity implements IBuCity {
 		}
 		return liste;
 	}
+
+    @Override
+    public City addNewCity(City city) throws WineException {
+        City cit =null;
+        try {
+            cit = daoCity.insertObj(city);
+        } catch (WineException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return cit;
+    }
 
 }
