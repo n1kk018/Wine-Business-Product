@@ -5,6 +5,7 @@
  */
 package fr.afcepf.atod.business.product.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +15,6 @@ import org.springframework.stereotype.Service;
 
 import fr.afcepf.atod.business.product.api.IBuProduct;
 import fr.afcepf.atod.business.product.api.IGetWinesParameters;
-import fr.afcepf.atod.business.product.designpattern.visitor.ProductBase;
-import fr.afcepf.atod.business.product.designpattern.visitor.IVisitable;
-import fr.afcepf.atod.business.product.designpattern.visitor.ProductsVisitor;
 import fr.afcepf.atod.vin.data.exception.WineErrorCode;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoProduct;
@@ -25,8 +23,6 @@ import fr.afcepf.atod.wine.entity.Product;
 import fr.afcepf.atod.wine.entity.ProductType;
 import fr.afcepf.atod.wine.entity.ProductVarietal;
 import fr.afcepf.atod.wine.entity.ProductVintage;
-import fr.afcepf.atod.wine.entity.ProductWine;
-import java.util.ArrayList;
 
 /**
  *
