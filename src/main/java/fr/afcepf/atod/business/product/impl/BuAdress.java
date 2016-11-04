@@ -26,4 +26,14 @@ public class BuAdress implements IBuAdress {
 		return adress;
 	}
 
+	@Override
+	public Boolean updateNewAddress(Adress adr) throws WineException {
+		return daoAdress.updateObj(adr);
+	}
+
+	@Override
+	public Adress findAddress(Integer idAddress) throws WineException {
+		return daoAdress.findObj(idAddress);    
+	}
+
 }
