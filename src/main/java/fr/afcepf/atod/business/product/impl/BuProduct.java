@@ -253,6 +253,18 @@ public class BuProduct implements IBuProduct, IGetWinesParameters {
         }
         return wines;
     }
+    
+    @Override
+    public List<Product> categoryAccordingToESSearchList(List<Integer> Idz, Integer paramFirstRow,
+            Integer paramRowsPerPage, String paramSorting) throws WineException {
+        wines = new ArrayList<Product>();
+        wines = daoProduct.findByIdzList(Idz, paramFirstRow, paramRowsPerPage, paramSorting.split("_")[0],paramSorting.split("_")[1]);
+        if (wines != null && wines.isEmpty()) {
+            throw new WineException(WineErrorCode.RECHERCHE_NON_PRESENTE_EN_BASE,
+                    "Pas de produits trouves selon les identifiants fournis");
+        }
+        return wines;
+    }
 
     @Override
     public List<Product> getWinesParameters(ProductType type, Object o,

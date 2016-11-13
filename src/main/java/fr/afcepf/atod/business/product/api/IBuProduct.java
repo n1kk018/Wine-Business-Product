@@ -115,6 +115,8 @@ public interface IBuProduct {
      */
     List<Product> categoryAccordingToObjectType(ProductType type, Object o,Integer firstRow,Integer rowsPerPage, String sorting) throws WineException;
     
+    List<Product> categoryAccordingToESSearchList(List<Integer> Idz, Integer firstRow,Integer rowsPerPage, String sorting) throws WineException;
+    
     Integer countCategoryAccordingToObjectType(ProductType type, Object o) throws WineException;
     
     Map<ProductType,Map<Integer, Integer>> getPricesRepartitionByType(List<ProductType> wineTypes) throws WineException;
