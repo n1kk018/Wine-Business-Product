@@ -7,13 +7,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import fr.afcepf.atod.business.product.api.IBuCountry;
 import fr.afcepf.atod.business.product.api.IBuProduct;
 import fr.afcepf.atod.vin.data.exception.WineException;
+import fr.afcepf.atod.wine.entity.Country;
 import fr.afcepf.atod.wine.entity.ProductType;
-import fr.afcepf.atod.wine.entity.ProductVarietal;
-import fr.afcepf.atod.wine.entity.ProductVintage;
-import fr.afcepf.atod.wine.entity.ProductWine;
-import java.util.Map;
 
 public class TestBu {
 
@@ -24,17 +22,23 @@ public class TestBu {
         @SuppressWarnings("resource")
         BeanFactory bf = new ClassPathXmlApplicationContext("classpath:springBuProduct.xml");
 
-        IBuProduct buProductbis = (IBuProduct) bf.getBean(IBuProduct.class);
+//        IBuProduct buProductbis = (IBuProduct) bf.getBean(IBuProduct.class);
+        IBuCountry buC = (IBuCountry) bf.getBean(IBuCountry.class);
+        
+        List<Country> test = buC.listAllCountries();
+        for (Country country : test) {
+            log.info(country.getName() +"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        }
 
-        List<ProductType> wineTypes = buProductbis.getWineTypes();
-        for (ProductType productType : wineTypes) {
-            log.info(productType.getType());
-        }
-        Locale.setDefault(Locale.US);
-        for (ProductType productType : wineTypes) {
-           // buProductbis.refreshLocalizedObject(productType);
-            log.info(productType.getType());
-        }
+//        List<ProductType> wineTypes = buProductbis.getWineTypes();
+//        for (ProductType productType : wineTypes) {
+//            log.info(productType.getType());
+//        }
+//        Locale.setDefault(Locale.US);
+//        for (ProductType productType : wineTypes) {
+//           // buProductbis.refreshLocalizedObject(productType);
+//            log.info(productType.getType());
+//        }
         //List<ProductVintage> vintages = buProductbis.findProductsByVintage(2010);
 
         /*Map<ProductType, List<String>> appellations= buProductbis.getAppellationsByType(wineTypes);

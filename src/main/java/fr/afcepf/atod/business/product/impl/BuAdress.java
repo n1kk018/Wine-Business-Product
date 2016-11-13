@@ -7,7 +7,6 @@ import fr.afcepf.atod.business.product.api.IBuAdress;
 import fr.afcepf.atod.vin.data.exception.WineException;
 import fr.afcepf.atod.wine.data.product.api.IDaoAdress;
 import fr.afcepf.atod.wine.entity.Adress;
-import java.io.Serializable;
 
 @Service
 public class BuAdress implements IBuAdress {
@@ -25,6 +24,16 @@ public class BuAdress implements IBuAdress {
 			e.printStackTrace();
 		}
 		return adress;
+	}
+
+	@Override
+	public Boolean updateNewAddress(Adress adr) throws WineException {
+		return daoAdress.updateObj(adr);
+	}
+
+	@Override
+	public Adress findAddress(Integer idAddress) throws WineException {
+		return daoAdress.findObj(idAddress);    
 	}
 
 }
